@@ -291,7 +291,7 @@ elif menu == "📊 Análise de Dados":
         df_tmp = df.copy()
         df_tmp['gap'] = df_tmp['iaa'] - df_tmp['ida']
         
-        fig4b = px.histogram(df_tmp, x='gap', nbins=30, color_discrete_sequence=['#b794f6'], opacity=0.9, histnorm='density')
+        fig4b = px.histogram(df_tmp, x='gap', nbins=30, color_discrete_sequence=['#b794f6'], opacity=0.9, histnorm='probability density')
         
         gap_drop = df_tmp['gap'].dropna()
         if len(gap_drop) > 1:
