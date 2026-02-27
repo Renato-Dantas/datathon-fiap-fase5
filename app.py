@@ -131,17 +131,38 @@ elif menu == "📊 Análise de Dados":
         """, unsafe_allow_html=True)
 
     # 1. IAN
-    st.markdown("### 1. Evolução da Defasagem (IAN)")
-    df['defasagem_cat'] = pd.cut(df['ian'], bins=[-1, 5, 6.9, 10], labels=["Severo", "Moderado", "Adequado"])
-    df_ian = df.groupby(['ano', 'defasagem_cat']).size().reset_index(name='count')
-    df_ian['percent'] = df_ian.groupby('ano')['count'].transform(lambda x: x / x.sum() * 100)
+    st.markdown("### Perfil geral de defasagem (IAN)")
     
-    fig1 = px.bar(df_ian, x='ano', y='percent', color='defasagem_cat', text=df_ian['percent'].apply(lambda x: f'{x:.1f}%'),
-                  color_discrete_map={"Adequado": NEON_GREEN, "Moderado": NEON_ORANGE, "Severo": NEON_PINK}, barmode='group')
-    fig1.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig1), use_container_width=True)
-    insight_card("1. Adequação do nível (IAN): Qual é o perfil geral de defasagem dos alunos e como ele evolui ao longo do ano?", 
+    insight_card("Qual é o perfil geral de defasagem dos alunos (IAN) e como ele evolui ao longo do ano?", 
                  "O programa tem sucesso em combater o risco educacional severo. Ao longo da série histórica, nota-se uma tendência positiva onde, a cada ano, os alunos consolidam sua jornada rumo à adequação de nível, comprovando a efetividade das práticas pedagógicas ao nivelar a aprendizagem.")
+
+    df['defasagem_cat'] = pd.cut(df['ian'], bins=[-1, 4.9, 6.9, 10], labels=["Severa (0 a 4.9)", "Moderada (5 a 6.9)", "Adequada (7 a 10)"])
+    color_map_ian = {"Severa (0 a 4.9)": "#d0bfff", "Moderada (5 a 6.9)": "#a188e5", "Adequada (7 a 10)": "#8257E5"}
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        df_ian_geral = df.groupby('defasagem_cat', observed=True).size().reset_index(name='count')
+        fig1a = px.bar(df_ian_geral, x='defasagem_cat', y='count', text=df_ian_geral['count'].apply(lambda x: f'{x} alunos'),
+                       color='defasagem_cat', color_discrete_map=color_map_ian)
+        fig1a = apply_plotly_layout(fig1a)
+        fig1a.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig1a.update_layout(title="Perfil Geral de Defasagem (IAN)", showlegend=False, 
+                            yaxis=dict(showgrid=False, showticklabels=False, title=""), 
+                            xaxis=dict(title=""))
+        st.plotly_chart(fig1a, use_container_width=True)
+        
+    with col2:
+        df_ian_ano = df.groupby(['ano', 'defasagem_cat'], observed=True).size().reset_index(name='count')
+        df_ian_ano['percent'] = df_ian_ano.groupby('ano')['count'].transform(lambda x: x / x.sum() * 100)
+        fig1b = px.bar(df_ian_ano, x='ano', y='percent', color='defasagem_cat', text=df_ian_ano['percent'].apply(lambda x: f'{x:.1f}%'),
+                       color_discrete_map=color_map_ian, barmode='stack')
+        fig1b = apply_plotly_layout(fig1b)
+        fig1b.update_traces(textposition='inside', insidetextanchor='middle', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig1b.update_layout(title="Evolução do Perfil de Defasagem por Ano (%)", legend_title="", 
+                            yaxis=dict(showgrid=False, showticklabels=False, title=""), 
+                            xaxis=dict(title="", type='category'))
+        st.plotly_chart(fig1b, use_container_width=True)
 
     # 2. IDA
     st.markdown("### 2. Desempenho Acadêmico (IDA)")
