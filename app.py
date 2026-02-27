@@ -52,8 +52,8 @@ def apply_plotly_layout(fig):
         plot_bgcolor=BG_COLOR,
         paper_bgcolor=BG_COLOR,
         font=dict(color=TEXT_COLOR),
-        margin=dict(l=20, r=20, t=40, b=20),
-        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5, font=dict(color=TEXT_COLOR))
+        margin=dict(l=20, r=20, t=50, b=20),
+        legend=dict(orientation="v", yanchor="top", y=1.1, xanchor="right", x=1.0, font=dict(color=TEXT_COLOR))
     )
     fig.update_xaxes(showgrid=False, color=TEXT_COLOR, tickfont=dict(color=TEXT_COLOR))
     fig.update_yaxes(showgrid=True, gridcolor='rgba(255,255,255,0.1)', color=TEXT_COLOR, tickfont=dict(color=TEXT_COLOR))
@@ -149,7 +149,8 @@ elif menu == "📊 Análise de Dados":
         fig1a.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
         fig1a.update_layout(title="Perfil Geral de Defasagem (IAN)", showlegend=False, 
                             yaxis=dict(showgrid=False, showticklabels=False, title=""), 
-                            xaxis=dict(title=""))
+                            xaxis=dict(title=""),
+                            height=400)
         st.plotly_chart(fig1a, use_container_width=True)
         
     with col2:
@@ -161,7 +162,8 @@ elif menu == "📊 Análise de Dados":
         fig1b.update_traces(textposition='inside', insidetextanchor='middle', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
         fig1b.update_layout(title="Evolução do Perfil de Defasagem por Ano (%)", legend_title="", 
                             yaxis=dict(showgrid=False, showticklabels=False, title=""), 
-                            xaxis=dict(title="", type='category'))
+                            xaxis=dict(title="", type='category'),
+                            height=400)
         st.plotly_chart(fig1b, use_container_width=True)
 
     # 2. IDA
