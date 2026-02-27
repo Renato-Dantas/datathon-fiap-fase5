@@ -177,16 +177,19 @@ Em 2016, depois de anos de atuação, decidem ampliar o programa para que mais j
     
     st.markdown("---")
     
-    st.markdown("### Sobre este Projeto (Datathon - Fase 5)")
+    st.markdown("### 🤝 A Parceria Educacional")
     st.markdown('''
-**Quais dados são usados?**  
-Utilizamos o dataset de pesquisa extensiva do desenvolvimento educacional no período de 2022, 2023 e 2024. Esses dados contêm métricas de desempenho acadêmico (IDA), engajamento (IEG), fatores psicossociais (IPS) e avaliações psicopedagógicas (IPP) dos alunos atendidos.
+**Nosso Projeto**  
+Como uma consultoria de dados especializada, fomos convidados a atuar junto à Passos Mágicos durante o desafio final (Datathon - Fase 5) da FIAP. Nosso objetivo principal é aplicar técnicas avançadas de Analytics não apenas para visualizar o passado, mas para iluminar o futuro através de modelos inteligentes, ajudando a escalar a nobre missão da Associação.
 
 **O que tentamos responder?**  
-O objetivo principal é responder a perguntas de dores de negócio através de Analytics, identificando perfis de defasagem, descobrindo o impacto de indicadores como engajamento e bolsas de estudo, e demonstrando a efetividade real do programa ao longo dos anos.
+O grande desafio de negócio que abraçamos foi mapear a fundo a jornada dos alunos: descobrir perfis de defasagem, comprovar matematicamente o impacto de ferramentas como bolsas de estudo e apoio psicológico, além de consolidar a efetividade do modelo educacional.
 
-**O uso de Machine Learning e o que ela prevê?**  
-Com base no histórico dos alunos, construímos um modelo de A.I. preditivo (XGBoost Otimizado) capaz de identificar padrões que antecedem uma queda no rendimento e aumento da defasagem escolar. O modelo **prevê a probabilidade probabilidade do aluno entrar em risco grave**, permitindo ação focada e precoce dos educadores e psicólogos da ONG.
+**Quais dados utilizamos?**  
+Nossas análises mergulham no rico *dataset* histórico da ONG (anos de 2022 a 2024). Essa base nos forneceu as peças do quebra-cabeça: Indicadores de Desempenho Acadêmico (IDA), Engajamento (IEG), fatores Psicossociais (IPS) e avaliações Psicopedagógicas (IPP) de cada estudante assistido.
+
+**Por Que Machine Learning?**  
+Olhar para o passado é fundamental, mas prever o amanhã é transformador. Construímos e otimizamos uma Inteligência Artificial Preditiva (baseada em *XGBoost*) que aprende com esse vasto histórico para atuar como um **Sistema de Alerta Precoce**. O nosso modelo prediz a probabilidade matemática de um aluno entrar em risco grave, entregando aos educadores e psicólogos o poder de agir proativamente antes que o rendimento do aluno caia vertiginosamente.
     ''')
 
 # ==========================================
