@@ -53,7 +53,7 @@ def apply_plotly_layout(fig):
         paper_bgcolor=BG_COLOR,
         font=dict(color=TEXT_COLOR),
         margin=dict(l=20, r=20, t=50, b=20),
-        legend=dict(orientation="v", yanchor="top", y=1.1, xanchor="right", x=1.0, font=dict(color=TEXT_COLOR))
+        legend=dict(orientation="v", yanchor="top", y=1.0, xanchor="left", x=1.02, font=dict(color=TEXT_COLOR))
     )
     fig.update_xaxes(showgrid=False, color=TEXT_COLOR, tickfont=dict(color=TEXT_COLOR))
     fig.update_yaxes(showgrid=True, gridcolor='rgba(255,255,255,0.1)', color=TEXT_COLOR, tickfont=dict(color=TEXT_COLOR))
