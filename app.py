@@ -167,14 +167,54 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig1b, use_container_width=True)
 
     # 2. IDA
-    st.markdown("### 2. Desempenho Acadêmico (IDA)")
-    df_ida = df.groupby('ano')['ida'].mean().reset_index()
-    fig2 = px.line(df_ida, x='ano', y='ida', text=df_ida['ida'].apply(lambda x: f'{x:.2f}'), markers=True)
-    fig2.update_traces(textposition='top center', line=dict(color=ROXO_PM, width=4), marker=dict(size=10, color=NEON_BLUE))
-    fig2.update_layout(yaxis_range=[0, 10])
-    st.plotly_chart(apply_plotly_layout(fig2), use_container_width=True)
-    insight_card("2. Desempenho acadêmico (IDA): O desempenho acadêmico médio está melhorando, estagnado ou caindo?",
+    st.markdown("### Desempenho acadêmico (IDA)")
+    
+    insight_card("O desempenho acadêmico médio está melhorando, estagnado ou caindo?",
                  "O indicador acadêmico demonstra uma curva que acompanha a recuperação e nivelamento dos alunos subindo consistentemente. O programa não apenas tira o aluno do risco na base, mas garante a manutenção do desempenho quando o nível de cobrança e complexidade escolar aumenta.")
+
+    col3, col4 = st.columns(2)
+    
+    with col3:
+        df_ida_ano = df.groupby('ano')['ida'].mean().reset_index()
+        fig2a = px.bar(df_ida_ano, x='ano', y='ida', text=df_ida_ano['ida'].apply(lambda x: f'Nota {x:.2f}'),
+                       color_discrete_sequence=[ROXO_PM])
+        fig2a = apply_plotly_layout(fig2a)
+        fig2a.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig2a.update_layout(title="Evolução do Desempenho Acadêmico (IDA Médio)",
+                            yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 10]), 
+                            xaxis=dict(title="", type='category'),
+                            height=400)
+        st.plotly_chart(fig2a, use_container_width=True)
+        
+    with col4:
+        df_tmp = df.copy()
+        df_tmp['fase_nome'] = df_tmp['fase'].astype(str).apply(lambda x: 'Fase 0 (Alfa)' if x == '0' else f'Fase {x}')
+        
+        # Conta as top 6 fases gerais do projeto
+        fases_populosas = df_tmp['fase'].value_counts().nlargest(6).index
+        df_ida_fase = df_tmp[df_tmp['fase'].isin(fases_populosas)].groupby(['fase', 'fase_nome', 'ano'])['ida'].mean().reset_index()
+        
+        # Pivot garantindo a ordem crescente da fase
+        df_ida_fase = df_ida_fase.sort_values(by=['fase', 'ano'])
+        df_ida_pivot = df_ida_fase.pivot(index='fase_nome', columns='ano', values='ida')
+        
+        sorted_fases = sorted(df_ida_pivot.index, key=lambda x: int(x.split(' ')[1]) if x != 'Fase 0 (Alfa)' else 0)
+        df_ida_pivot = df_ida_pivot.reindex(sorted_fases)
+        
+        # Heatmap com Plotly Express
+        fig2b = px.imshow(df_ida_pivot, text_auto=".2f", aspect="auto",
+                          color_continuous_scale=["#3a286b", "#8257E5", "#a188e5"],
+                          labels=dict(x="", y="", color="IDA"))
+        fig2b = apply_plotly_layout(fig2b)
+        fig2b.update_traces(xgap=2, ygap=2, textfont=dict(color='#ffffff'))
+        fig2b.update_xaxes(side="bottom", type='category')
+        fig2b.update_yaxes(autorange="reversed")
+        fig2b.update_layout(title="Desempenho (IDA) nas Fases Mais Populosas",
+                            coloraxis_showscale=False,
+                            xaxis=dict(title=""),
+                            yaxis=dict(title=""),
+                            height=400)
+        st.plotly_chart(fig2b, use_container_width=True)
 
     # 3. IEG
     st.markdown("### 3. Engajamento nas Atividades (IEG)")
