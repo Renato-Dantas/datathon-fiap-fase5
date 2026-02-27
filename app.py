@@ -313,15 +313,46 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig4b, use_container_width=True)
 
     # 5. IPS
-    st.markdown("### 5. Aspectos Psicossociais (IPS)")
-    df['ips_trend'] = np.where(df['delta_ips'] < 0, 'Queda de IPS', 'Estável/Alta de IPS')
-    df_ips = df.groupby('ips_trend')[['delta_ida', 'delta_ieg']].mean().reset_index()
-    fig5 = px.bar(df_ips, x='ips_trend', y=['delta_ida', 'delta_ieg'], barmode='group', text_auto='.2f',
-                  color_discrete_sequence=[NEON_BLUE, NEON_PINK])
-    fig5.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig5), use_container_width=True)
-    insight_card("5. Aspectos psicossociais (IPS): Há padrões psicossociais que antecedem quedas de desempenho acadêmico?",
-                 "Sim! Oscilações no bem-estar psicossocial (IPS) estão conectadas ao aprendizado de forma antecipada. Alunos com o IPS em Queda apresentam variações negativas no desempenho. O monitoramento do IPS alerta para uma atuação preventiva crucial.")
+    st.markdown("### Aspectos Psicossociais (IPS)")
+    
+    insight_card("Qual o impacto das variações psicossociais no rendimento e engajamento?",
+                 "Existe uma correlação positiva entre o bem-estar psicológico e os resultados acadêmicos. Alunos que mantêm ou melhoram seu IPS (Aspectos Psicossociais) apresentam menores quedas de desempenho e engajamento comparados àqueles que sofrem piora psicossocial. O suporte psicológico atua como um 'escudo' protetor para a vida acadêmica.")
+
+    col9, col10 = st.columns(2)
+    
+    with col9:
+        cols_corr_delta = ['delta_ips', 'delta_ida', 'delta_ieg']
+        corr_delta = df[cols_corr_delta].corr().round(2)
+        
+        labels_delta = ['Variação Psicossocial<br>(Δ IPS)', 'Variação Desempenho<br>(Δ IDA)', 'Variação Engajamento<br>(Δ IEG)']
+        corr_delta.columns = labels_delta
+        corr_delta.index = labels_delta
+        
+        fig5a = px.imshow(corr_delta, text_auto=".2f", aspect="auto",
+                          color_continuous_scale=["#f3f0ff", "#a188e5", "#8257E5"],
+                          labels=dict(x="", y="", color="Correlação"))
+        fig5a = apply_plotly_layout(fig5a)
+        fig5a.update_traces(xgap=2, ygap=2, textfont=dict(color='#000000', size=14, family="Arial Black"))
+        fig5a.update_xaxes(side="bottom")
+        fig5a.update_yaxes(autorange="reversed")
+        fig5a.update_layout(title="P5. Força da Relação entre Variações (Deltas)", coloraxis_showscale=False, height=400)
+        st.plotly_chart(fig5a, use_container_width=True)
+
+    with col10:
+        df['ips_trend'] = np.where(df['delta_ips'] < 0, 'IPS em Queda', 'IPS Estável/Subindo')
+        df_ips = df.groupby('ips_trend')[['delta_ida', 'delta_ieg']].mean().reset_index().melt(id_vars='ips_trend')
+        df_ips['variable'] = df_ips['variable'].replace({'delta_ida': 'Variação IDA', 'delta_ieg': 'Variação IEG'})
+        
+        fig5b = px.bar(df_ips, x='variable', y='value', color='ips_trend', barmode='group', text='value',
+                       color_discrete_sequence=['#8257E5', '#d0bfff'])
+        fig5b = apply_plotly_layout(fig5b)
+        fig5b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=13, family="Arial Black"))
+        fig5b.update_layout(title="Impacto do Comportamento do IPS no Desempenho", 
+                            legend_title="",
+                            legend=dict(orientation="v", yanchor="top", y=1.0, xanchor="right", x=1.0, font=dict(color=TEXT_COLOR)),
+                            yaxis=dict(showgrid=False, showticklabels=False, title=""), 
+                            xaxis=dict(title=""), height=400)
+        st.plotly_chart(fig5b, use_container_width=True)
 
     # 6. IPP
     st.markdown("### 6. Psicopedagógico vs Defasagem (IPP x IAN)")
