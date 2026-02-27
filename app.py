@@ -133,8 +133,8 @@ elif menu == "📊 Análise de Dados":
     # 1. IAN
     st.markdown("### Perfil geral de defasagem (IAN)")
     
-    insight_card("Qual é o perfil geral de defasagem dos alunos (IAN) e como ele evolui ao longo do ano?", 
-                 "O programa tem sucesso em combater o risco educacional severo. Ao longo da série histórica, nota-se uma tendência positiva onde, a cada ano, os alunos consolidam sua jornada rumo à adequação de nível, comprovando a efetividade das práticas pedagógicas ao nivelar a aprendizagem.")
+    insight_card("Qual é o perfil geral de defasagem dos alunos (IAN) e como ele evolui?", 
+                 "Existe uma **tendência estrutural de melhora** e redução de riscos severos. A Passos Mágicos está gerando impacto de longo prazo para nivelar a aprendizagem ano a ano. Focar no acompanhamento individualizado de alunos no grau *Moderado* é a chave para acelerar a migração para a Excelência (*Adequado*).")
 
     df['defasagem_cat'] = pd.cut(df['ian'], bins=[-1, 4.9, 6.9, 10], labels=["Severa (0 a 4.9)", "Moderada (5 a 6.9)", "Adequada (7 a 10)"])
     color_map_ian = {"Severa (0 a 4.9)": "#d0bfff", "Moderada (5 a 6.9)": "#a188e5", "Adequada (7 a 10)": "#8257E5"}
@@ -169,8 +169,8 @@ elif menu == "📊 Análise de Dados":
     # 2. IDA
     st.markdown("### Desempenho acadêmico (IDA)")
     
-    insight_card("O desempenho acadêmico médio está melhorando, estagnado ou caindo?",
-                 "O indicador acadêmico demonstra uma curva que acompanha a recuperação e nivelamento dos alunos subindo consistentemente. O programa não apenas tira o aluno do risco na base, mas garante a manutenção do desempenho quando o nível de cobrança e complexidade escolar aumenta.")
+    insight_card("O desempenho acadêmico responde ao nivelamento e aumenta ou estagna com os anos?",
+                 "O indicador acadêmico (IDA) comprova a **recuperação real** dos alunos, subindo de forma consistente. A metodologia da ONG não apenas tira o aluno do risco básico, mas **blinda e fortalece o seu desempenho histórico**, garantindo que ele suporte a alta complexidade que as próximas fases escolares exigirão.")
 
     col3, col4 = st.columns(2)
     
