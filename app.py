@@ -262,13 +262,45 @@ elif menu == "📊 Análise de Dados":
                             xaxis=dict(title=""), height=400)
         st.plotly_chart(fig3b, use_container_width=True)
     # 4. IAA
-    st.markdown("### 4. Autoavaliação vs Vida Real (IAA x IDA)")
-    fig4 = px.scatter(df, x='ida', y='iaa', color='ieg_nivel', opacity=0.7, 
-                      color_discrete_map={"Alto": NEON_GREEN, "Médio": ROXO_PM, "Baixo": NEON_PINK})
-    fig4.add_shape(type="line", x0=0, y0=0, x1=10, y1=10, line=dict(color="gray", dash="dash"))
-    st.plotly_chart(apply_plotly_layout(fig4), use_container_width=True)
-    insight_card("4. Autoavaliação (IAA): As percepções dos alunos sobre si mesmos são coerentes com seu desempenho real (IDA)?",
-                 "Existe um 'Gap de Otimismo' nos alunos. Ao comparar os dados, nota-se que a Autoavaliação (IAA) tende a ser superior ao desempenho acadêmico real. As estratégias de tutoria devem focar em feedbacks mais frequentes para alinhar a percepção do aluno à realidade acadêmica.")
+    st.markdown("### Autoavaliação e Gap de Percepção")
+    
+    insight_card("As percepções dos alunos sobre si mesmos são coerentes com seu desempenho real?",
+                 "Existe um claro 'Gap de Otimismo'. A maioria esmagadora dos alunos possui uma Autoavaliação (IAA) superior às notas reais de Desempenho (IDA). Isso mostra alta confiança, mas exige tutoria para alinhar a percepção e garantir que o aluno não subestime a necessidade de estudar mais.")
+
+    col7, col8 = st.columns(2)
+    
+    with col7:
+        df_gap_ano = df.groupby('ano')[['iaa', 'ida', 'ieg']].mean().reset_index().melt(id_vars='ano')
+        df_gap_ano['variable'] = df_gap_ano['variable'].replace({
+            'iaa': 'Autoavaliação (IAA)', 
+            'ida': 'Desempenho (IDA)', 
+            'ieg': 'Engajamento (IEG)'
+        })
+        fig4a = px.bar(df_gap_ano, x='ano', y='value', color='variable', barmode='group', text='value',
+                       color_discrete_sequence=['#8257E5', '#a188e5', '#e0d6ff'])
+        fig4a = apply_plotly_layout(fig4a)
+        fig4a.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig4a.update_layout(title="Autoavaliação vs. Desempenho e Engajamento", legend_title="",
+                            yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 11]), 
+                            xaxis=dict(title="", type='category'), height=400)
+        st.plotly_chart(fig4a, use_container_width=True)
+        
+    with col8:
+        df_tmp = df.copy()
+        df_tmp['gap'] = df_tmp['iaa'] - df_tmp['ida']
+        
+        fig4b = px.histogram(df_tmp, x='gap', nbins=30, color_discrete_sequence=['#b794f6'], opacity=0.9)
+        fig4b = apply_plotly_layout(fig4b)
+        fig4b.update_layout(title="Distribuição do Gap de Percepção (IAA - IDA)", showlegend=False,
+                            yaxis=dict(showgrid=False, showticklabels=False, title=""), 
+                            xaxis=dict(title="Diferença (Notas)", showgrid=True, gridcolor='rgba(255,255,255,0.1)'),
+                            height=400)
+        
+        fig4b.add_vline(x=0, line_dash="dash", line_color="white", line_width=2)
+        fig4b.add_annotation(x=-0.5, y=0.85, yref="paper", text="← Subestima-se", showarrow=False, font=dict(color="#ffffff", size=14), xanchor="right")
+        fig4b.add_annotation(x=0.5, y=0.85, yref="paper", text="Superestima-se →", showarrow=False, font=dict(color="#ffffff", size=14), xanchor="left")
+        
+        st.plotly_chart(fig4b, use_container_width=True)
 
     # 5. IPS
     st.markdown("### 5. Aspectos Psicossociais (IPS)")
