@@ -129,14 +129,36 @@ def aplicar_tema_grafico():
 # SIDEBAR NAVEGAÇÃO
 # -----------------
 with st.sidebar:
-    st.image("https://passosmagicos.org.br/wp-content/uploads/2020/10/logo-passos-magicos.png", use_container_width=True)
+    svg_logo = """
+    <svg width="100%" height="120" viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#8257E5">
+        <path d="M 50,40 C 55,40 60,35 60,30 C 60,25 55,20 50,20 C 45,20 40,25 40,30 C 40,35 45,40 50,40 Z"/>
+        <path d="M 55,45 C 65,45 70,55 70,70 L 65,130 L 55,130 L 55,90 L 45,90 L 45,130 L 35,130 L 30,70 C 30,55 35,45 45,45 Z"/>
+        <path d="M 20,70 C 23,70 25,67 25,64 C 25,61 23,58 20,58 C 17,58 15,61 15,64 C 15,67 17,70 20,70 Z"/>
+        <path d="M 23,73 C 30,73 32,80 32,90 L 30,130 L 24,130 L 24,105 L 16,105 L 16,130 L 10,130 L 8,90 C 8,80 10,73 17,73 Z"/>
+        <path d="M 32,85 L 35,85 L 35,80 L 32,80 Z"/>
+      </g>
+      <text x="80" y="65" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#c9d1d9">PASSOS</text>
+      <text x="85" y="115" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-style="italic" font-size="52" fill="#c9d1d9">MÁGICOS</text>
+      <path d="M 160,80 L 163,86 L 170,86 L 165,90 L 167,97 L 160,93 L 153,97 L 155,90 L 150,86 L 157,86 Z" fill="#8257E5"/>
+    </svg>
+    """
+    st.markdown(svg_logo, unsafe_allow_html=True)
+        
     st.markdown("<br>", unsafe_allow_html=True)
     
     st.markdown("### 🧭 Menu de Navegação")
-    menu = st.radio("", ["🏠 Home & KPIs", "📊 Análises (Storytelling)", "🤖 Predição de Risco"])
+    menu = st.radio("", ["🏠 Home & KPIs", "📊 Análises (Storytelling)", "🔍 Predição de Risco"])
     
     st.markdown("---")
-    st.markdown("Desenvolvido para o **Datathon Fase 5** da FIAP.")
+    
+    # Disclaimer no formato Footer
+    st.markdown("<br><br><br><br><br><br>", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='color: #8b949e; font-size: 13px; text-align: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);'>"
+        "Transformação Educacional<br><b>Passos Mágicos - Fase 5 FIAP</b></div>", 
+        unsafe_allow_html=True
+    )
 
 # ==========================================
 # PÁGINA: HOME & KPIS
