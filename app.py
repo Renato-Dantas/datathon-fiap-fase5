@@ -347,10 +347,12 @@ elif menu == "📊 Análise de Dados":
                        color_discrete_sequence=['#8257E5', '#d0bfff'])
         fig5b = apply_plotly_layout(fig5b)
         fig5b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=13, family="Arial Black"))
+        
+        y_min = df_ips['value'].min() * 1.2
         fig5b.update_layout(title="Impacto do Comportamento do IPS no Desempenho", 
                             legend_title="",
-                            legend=dict(orientation="v", yanchor="top", y=1.0, xanchor="right", x=1.0, font=dict(color=TEXT_COLOR)),
-                            yaxis=dict(showgrid=False, showticklabels=False, title=""), 
+                            legend=dict(orientation="v", yanchor="bottom", y=0.0, xanchor="left", x=0.0, font=dict(color=TEXT_COLOR)),
+                            yaxis=dict(showgrid=False, showticklabels=False, title="", range=[y_min, 0]), 
                             xaxis=dict(title=""), height=400)
         st.plotly_chart(fig5b, use_container_width=True)
 
