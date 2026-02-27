@@ -286,14 +286,24 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig4a, use_container_width=True)
         
     with col8:
+        import scipy.stats as stats
+        
         df_tmp = df.copy()
         df_tmp['gap'] = df_tmp['iaa'] - df_tmp['ida']
         
-        fig4b = px.histogram(df_tmp, x='gap', nbins=30, color_discrete_sequence=['#b794f6'], opacity=0.9)
+        fig4b = px.histogram(df_tmp, x='gap', nbins=30, color_discrete_sequence=['#b794f6'], opacity=0.9, histnorm='density')
+        
+        gap_drop = df_tmp['gap'].dropna()
+        if len(gap_drop) > 1:
+            kde = stats.gaussian_kde(gap_drop)
+            x_kde = np.linspace(gap_drop.min(), gap_drop.max(), 100)
+            fig4b.add_scatter(x=x_kde, y=kde(x_kde), mode='lines', line=dict(color='#8257E5', width=2), showlegend=False)
+
         fig4b = apply_plotly_layout(fig4b)
+        fig4b.update_traces(marker_line_color=BG_COLOR, marker_line_width=1, selector=dict(type='histogram'))
         fig4b.update_layout(title="Distribuição do Gap de Percepção (IAA - IDA)", showlegend=False,
                             yaxis=dict(showgrid=False, showticklabels=False, title=""), 
-                            xaxis=dict(title="Diferença (Notas)", showgrid=True, gridcolor='rgba(255,255,255,0.1)'),
+                            xaxis=dict(title="Diferença (Notas)", showgrid=False),
                             height=400)
         
         fig4b.add_vline(x=0, line_dash="dash", line_color="white", line_width=2)
