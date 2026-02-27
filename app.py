@@ -198,7 +198,15 @@ elif menu == "📊 Análise de Dados":
         df_ida_fase = df_ida_fase.sort_values(by=['fase', 'ano'])
         df_ida_pivot = df_ida_fase.pivot(index='fase_nome', columns='ano', values='ida')
         
-        sorted_fases = sorted(df_ida_pivot.index, key=lambda x: int(x.split(' ')[1]) if x != 'Fase 0 (Alfa)' else 0)
+        def safe_fase_int(x):
+            if x == 'Fase 0 (Alfa)': return 0
+            try:
+                numeric_part = ''.join(filter(str.isdigit, str(x)))
+                return int(numeric_part) if numeric_part else 999
+            except:
+                return 999
+                
+        sorted_fases = sorted(df_ida_pivot.index, key=safe_fase_int)
         df_ida_pivot = df_ida_pivot.reindex(sorted_fases)
         
         # Heatmap com Plotly Express
