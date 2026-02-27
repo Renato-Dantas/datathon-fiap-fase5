@@ -225,16 +225,42 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig2b, use_container_width=True)
 
     # 3. IEG
-    st.markdown("### 3. Engajamento nas Atividades (IEG)")
-    df['ieg_nivel'] = pd.cut(df['ieg'], bins=[-1, 5.9, 7.9, 10], labels=['Baixo', 'Médio', 'Alto'])
-    df_ieg_medias = df.groupby('ieg_nivel')[['ida', 'ipv']].mean().reset_index()
-    fig3 = px.bar(df_ieg_medias, x='ieg_nivel', y=['ida', 'ipv'], text_auto='.2f', barmode='group',
-                  color_discrete_sequence=[ROXO_PM, NEON_ORANGE])
-    fig3.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig3), use_container_width=True)
-    insight_card("3. Engajamento (IEG): O grau de engajamento tem relação direta com o desempenho (IDA) e o ponto de virada (IPV)?",
-                 "O engajamento é a bússola e a alavanca principal do sucesso dentro do projeto! Promover campanhas, metodologias ativas e gamificação para garantir que o aluno mantenha alta presença e entrega de tarefas garante automaticamente notas (IDA) elevadas e impulsiona o Ponto de Virada.")
+    st.markdown("### Impacto no engajamento")
+    
+    insight_card("Qual o impacto real do engajamento estudantil nos resultados?",
+                 "Existe uma relação direta e forte entre o nível de entrega às tarefas e as notas conquistadas. O engajamento se mostra como um fator determinante para o alcance do Ponto de Virada, com alunos altamente engajados liderando as estatísticas acadêmicas de sucesso.")
 
+    col5, col6 = st.columns(2)
+    
+    with col5:
+        cols_corr = ['ieg', 'ida', 'ipv']
+        corr_matrix = df[cols_corr].corr().round(2)
+        corr_matrix.columns = ['Engajamento (IEG)', 'Desempenho (IDA)', 'Ponto de Virada (IPV)']
+        corr_matrix.index = ['Engajamento (IEG)', 'Desempenho (IDA)', 'Ponto de Virada (IPV)']
+        
+        fig3a = px.imshow(corr_matrix, text_auto=".2f", aspect="auto",
+                          color_continuous_scale=["#161b22", "#8257E5"],
+                          labels=dict(x="", y="", color="Correlação"))
+        fig3a = apply_plotly_layout(fig3a)
+        fig3a.update_traces(xgap=2, ygap=2, textfont=dict(color='#ffffff'))
+        fig3a.update_xaxes(side="bottom")
+        fig3a.update_yaxes(autorange="reversed")
+        fig3a.update_layout(title="Força da Relação (Correlação)", coloraxis_showscale=False, height=400)
+        st.plotly_chart(fig3a, use_container_width=True)
+
+    with col6:
+        df['ieg_nivel_img'] = pd.cut(df['ieg'], bins=[-1, 5.9, 7.9, 10], labels=["Baixo (0 a 5.9)", "Médio (6 a 7.9)", "Alto (8 a 10)"])
+        df_ieg_img = df.groupby('ieg_nivel_img', observed=True)[['ida', 'ipv']].mean().reset_index().melt(id_vars='ieg_nivel_img')
+        df_ieg_img['variable'] = df_ieg_img['variable'].replace({'ida': 'Desempenho (IDA)', 'ipv': 'Ponto de Virada (IPV)'})
+        
+        fig3b = px.bar(df_ieg_img, x='ieg_nivel_img', y='value', color='variable', barmode='group', text='value',
+                       color_discrete_sequence=['#a188e5', '#d0bfff'])
+        fig3b = apply_plotly_layout(fig3b)
+        fig3b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig3b.update_layout(title="Impacto do Engajamento (Média das Notas)", legend_title="",
+                            yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 10]), 
+                            xaxis=dict(title=""), height=400)
+        st.plotly_chart(fig3b, use_container_width=True)
     # 4. IAA
     st.markdown("### 4. Autoavaliação vs Vida Real (IAA x IDA)")
     fig4 = px.scatter(df, x='ida', y='iaa', color='ieg_nivel', opacity=0.7, 
