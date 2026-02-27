@@ -148,7 +148,7 @@ with st.sidebar:
     st.markdown("<br>", unsafe_allow_html=True)
     
     st.markdown("### 🧭 Menu de Navegação")
-    menu = st.radio("", ["🏠 Home & KPIs", "📊 Análises (Storytelling)", "🔍 Predição de Risco"])
+    menu = st.radio("", ["🏠 Conheça o Projeto", "📊 Análises (Storytelling)", "🔍 Predição de Risco"])
     
     st.markdown("---")
     
@@ -161,30 +161,33 @@ with st.sidebar:
     )
 
 # ==========================================
-# PÁGINA: HOME & KPIS
+# PÁGINA: CONHEÇA O PROJETO
 # ==========================================
-if menu == "🏠 Home & KPIs":
-    st.title("Impacto e Transformação Educacional")
-    st.markdown("Visão executiva do programa **Passos Mágicos** entre 2022 e 2024.")
+if menu == "🏠 Conheça o Projeto":
+    st.title("Conheça o Projeto")
     
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown(f'<div class="kpi-card"><div class="kpi-label">Alunos Avaliados</div><div class="kpi-value">{df.shape[0]}</div></div>', unsafe_allow_html=True)
-    with col2:
-        media_inde = df[df['ano'] == 2024]['inde'].mean()
-        st.markdown(f'<div class="kpi-card"><div class="kpi-label">INDE Médio (2024)</div><div class="kpi-value">{media_inde:.2f}</div></div>', unsafe_allow_html=True)
-    with col3:
-        b_count = df[df['bolsa'] == 'Sim'].shape[0]
-        st.markdown(f'<div class="kpi-card"><div class="kpi-label">Alunos Bolsistas</div><div class="kpi-value">{b_count}</div></div>', unsafe_allow_html=True)
-    with col4:
-        # Calcular proporcão de adequados (IAN > 6.9) em 2024 vs historico não é trivial so num kpi, mas vamos mostrar os aprovados no Ponto de Virada
-        ipv_count = df[(df['ano'] == 2024) & (df['ipv'] >= 7)].shape[0]
-        st.markdown(f'<div class="kpi-card"><div class="kpi-label">Pontos de Virada (24)</div><div class="kpi-value">{ipv_count}</div></div>', unsafe_allow_html=True)
+    st.markdown("### A Associação Passos Mágicos")
+    st.markdown('''
+A Associação Passos Mágicos tem uma trajetória de 33 anos de atuação, trabalhando na transformação da vida de crianças e jovens de baixa renda os levando a melhores oportunidades de vida.
 
-    st.markdown("### 🌟 A Nossa Missão")
-    st.info("Acreditamos na educação como a maior plataforma de mobilidade social do Brasil. Os indicadores abaixo não são apenas números, são trajetórias de crianças e adolescentes ganhando poder de escolha através do engajamento e apoio psicológico.")
+A transformação, idealizada por Michelle Flues e Dimetri Ivanoff, começou em 1992, atuando dentro de orfanatos, no município de Embu-Guaçu.
+
+Em 2016, depois de anos de atuação, decidem ampliar o programa para que mais jovens tivessem acesso a essa fórmula mágica para transformação que inclui: educação de qualidade, auxílio psicológico/psicopedagógico, ampliação de sua visão de mundo e protagonismo. Passaram então a atuar como um projeto social e educacional, criando assim a Associação Passos Mágicos.
+    ''')
+    
+    st.markdown("---")
+    
+    st.markdown("### Sobre este Projeto (Datathon - Fase 5)")
+    st.markdown('''
+**Quais dados são usados?**  
+Utilizamos o dataset de pesquisa extensiva do desenvolvimento educacional no período de 2022, 2023 e 2024. Esses dados contêm métricas de desempenho acadêmico (IDA), engajamento (IEG), fatores psicossociais (IPS) e avaliações psicopedagógicas (IPP) dos alunos atendidos.
+
+**O que tentamos responder?**  
+O objetivo principal é responder a perguntas de dores de negócio através de Analytics, identificando perfis de defasagem, descobrindo o impacto de indicadores como engajamento e bolsas de estudo, e demonstrando a efetividade real do programa ao longo dos anos.
+
+**O uso de Machine Learning e o que ela prevê?**  
+Com base no histórico dos alunos, construímos um modelo de A.I. preditivo (XGBoost Otimizado) capaz de identificar padrões que antecedem uma queda no rendimento e aumento da defasagem escolar. O modelo **prevê a probabilidade probabilidade do aluno entrar em risco grave**, permitindo ação focada e precoce dos educadores e psicólogos da ONG.
+    ''')
 
 # ==========================================
 # PÁGINA: DATA STORYTELLING
