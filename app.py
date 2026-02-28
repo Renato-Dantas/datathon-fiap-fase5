@@ -553,73 +553,74 @@ elif menu == "📊 Análise de Dados":
 elif menu == "🔍 Predição de Risco":
     st.markdown("""
         <style>
-        /* Sidebar fix: Ensure sidebar radio/menus are untouched by scoping our custom CSS, or strictly targeting main area */
-        [data-testid="stSidebar"] div[data-testid="stRadio"] > label {
+        /* Sidebar fix */
+        [data-testid="stSidebar"] div[data-testid="stRadio"] p {
             color: white !important;
             font-weight: normal !important;
         }
         
-        /* Custom card styling - instead of overriding global st elements, we use purely HTML wrapper or highly specific classes if possible.
-           Since Streamlit injects inputs outside our markdown, we'll keep the override but scope it better. */
-           
-        /* Make sure all labels are bold */
-        section.main div[data-testid="stNumberInput"] > label, 
-        section.main div[data-testid="stSelectbox"] > label, 
-        section.main div[data-testid="stRadio"] > label, 
-        section.main div[data-testid="stSlider"] > label {
+        /* Typography for labels: Streamlit puts <p> inside <label> */
+        div[data-testid="stNumberInput"] label p, 
+        div[data-testid="stSelectbox"] label p, 
+        div[data-testid="stRadio"] label p, 
+        div[data-testid="stSlider"] label p {
             color: #8be9fd !important;
-            font-weight: 900 !important; /* Bolder font for labels */
+            font-weight: bold !important;
             font-size: 14px !important;
             margin-bottom: 5px !important;
-            visibility: visible !important;
         }
 
-        /* The container of the input itself */
-        section.main div[data-testid="stNumberInput"], 
-        section.main div[data-testid="stSelectbox"], 
-        section.main div[data-testid="stRadio"], 
-        section.main div[data-testid="stSlider"] {
-            background-color: #1a1a2e; /* dark background */
-            padding: 20px 25px; /* Increased padding / gap */
-            border-radius: 8px;
-            border-left: 4px solid #8be9fd; /* neon blue border */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            margin-bottom: 25px; /* Increased gap between elements */
+        /* Container styling AND Gap: 2.5rem */
+        div[data-testid="stNumberInput"], 
+        div[data-testid="stSelectbox"], 
+        div[data-testid="stRadio"], 
+        div[data-testid="stSlider"] {
+            background-color: #1a1a2e !important; 
+            padding: 20px 25px !important;
+            border-radius: 8px !important;
+            border-left: 4px solid #8be9fd !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+            margin-bottom: 2.5rem !important; /* Espaçamento entre os elementos das divs: 2.5rem */
         }
         
-        /* Fix the slider background and make thumb/track neon blue */
-        section.main div[data-baseweb="slider"] > div {
+        /* Slider strictly white */
+        div[data-testid="stSlider"] div[data-baseweb="slider"] > div {
             background-color: transparent !important;
         }
-        section.main div[data-baseweb="slider"] [role="slider"] {
-            background-color: rgb(139, 233, 253) !important; /* thumb color */
-            border: 2px solid white !important;
+        /* Slider thumb (dot) */
+        div[data-testid="stSlider"] div[data-baseweb="slider"] [role="slider"] {
+            background-color: #fff !important; 
+            border: none !important;
         }
-        section.main div[data-baseweb="slider"] div[data-testid="stTickBar"] {
-            color: white !important; /* Min/Max scale values */
-            font-size: 12px !important;
+        /* Slider line / track */
+        div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div > div {
+            background-color: #fff !important; 
+        }
+        /* Text values (current value floating and min/max ends) */
+        div[data-testid="stSlider"] div[data-baseweb="slider"] div {
+            color: #fff !important; 
         }
         
-        /* Input text values in white */
-        section.main div[data-baseweb="input"] input,
-        section.main div[data-baseweb="select"] div {
+        /* Other Inputs texts */
+        div[data-baseweb="input"] input,
+        div[data-baseweb="select"] div {
             color: white !important;
             background-color: #282a36 !important; 
             border: none !important;
         }
 
-        /* Button styling */
-        .stButton>button {
+        /* Button: bold and black */
+        div.stButton > button, div.stButton > button p {
             background-color: #50fa7b !important;
-            color: black !important; /* Black font */
+            color: #000 !important; 
             font-size: 18px !important;
-            font-weight: 900 !important; /* Heavy bold */
+            font-weight: bold !important; 
             border-radius: 8px !important;
             transition: 0.3s !important;
             border: none !important;
-            padding: 15px !important;
+            padding: 10px !important;
         }
-        .stButton>button:hover {
+        div.stButton > button:hover {
             box-shadow: 0 0 15px #50fa7b !important;
             transform: translateY(-2px);
         }
