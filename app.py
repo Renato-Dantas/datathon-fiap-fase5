@@ -553,31 +553,67 @@ elif menu == "📊 Análise de Dados":
 elif menu == "🔍 Predição de Risco":
     st.markdown("""
         <style>
-        div[data-testid="stNumberInput"] > label, div[data-testid="stSelectbox"] > label, div[data-testid="stRadio"] > label, div[data-testid="stSlider"] > label {
+        /* Sidebar fix: Ensure sidebar radio/menus are untouched by scoping our custom CSS, or strictly targeting main area */
+        [data-testid="stSidebar"] div[data-testid="stRadio"] > label {
+            color: white !important;
+            font-weight: normal !important;
+        }
+        
+        /* Custom card styling - instead of overriding global st elements, we use purely HTML wrapper or highly specific classes if possible.
+           Since Streamlit injects inputs outside our markdown, we'll keep the override but scope it better. */
+           
+        section.main div[data-testid="stNumberInput"] > label, 
+        section.main div[data-testid="stSelectbox"] > label, 
+        section.main div[data-testid="stRadio"] > label, 
+        section.main div[data-testid="stSlider"] > label {
             color: #8be9fd !important;
-            font-weight: 800 !important;
-            font-size: 16px !important;
+            font-weight: bold !important;
+            font-size: 14px !important;
+            margin-bottom: 5px !important;
+            visibility: visible !important;
         }
-        div[data-testid="stNumberInput"], div[data-testid="stSelectbox"], div[data-testid="stRadio"], div[data-testid="stSlider"] {
-            background-color: #1a1a2e;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 5px solid #8be9fd;
-            margin-bottom: 10px;
+
+        /* The container of the input itself */
+        section.main div[data-testid="stNumberInput"], 
+        section.main div[data-testid="stSelectbox"], 
+        section.main div[data-testid="stRadio"], 
+        section.main div[data-testid="stSlider"] {
+            background-color: #1a1a2e; /* dark background */
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #8be9fd; /* neon blue border */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
         }
-        div[data-baseweb="slider"] div {
-            background-color: #ffffff !important;
+        
+        /* Fix the slider background to be transparent/dark instead of the white box the user complained about,
+           but keep the slider track/thumb visible */
+        section.main div[data-baseweb="slider"] > div {
+            background-color: transparent !important;
         }
+        
+        /* Input text values in white */
+        section.main div[data-baseweb="input"] input,
+        section.main div[data-baseweb="select"] div {
+            color: white !important;
+            background-color: #282a36 !important; /* Slightly lighter dark for the input field itself */
+            border: none !important;
+        }
+
+        /* Button styling */
         .stButton>button {
             background-color: #50fa7b !important;
-            color: #0d1117 !important;
-            font-size: 20px !important;
-            font-weight: bold !important;
-            border-radius: 10px !important;
+            color: #000000 !important; /* Black text requested */
+            font-size: 18px !important;
+            font-weight: 900 !important;
+            border-radius: 8px !important;
             transition: 0.3s !important;
+            border: none !important;
+            padding: 15px !important;
         }
         .stButton>button:hover {
-            box-shadow: 0 0 20px #50fa7b !important;
+            box-shadow: 0 0 15px #50fa7b !important;
+            transform: translateY(-2px);
         }
         </style>
     """, unsafe_allow_html=True)
@@ -617,14 +653,16 @@ elif menu == "🔍 Predição de Risco":
             delta_ips = st.number_input("Variação Emocional (IPS)", min_value=-10.0, max_value=10.0, value=0.0)
             ipv = st.slider("Ponto de Virada (IPV)", 0.0, 10.0, 6.5, 0.1)
             
-        st.markdown('<div style="height: 15px;"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="height: 20px;"></div>', unsafe_allow_html=True)
+        
+        # Wrapped the button in columns to make it centered or full width properly, but form_submit_button behaviour is fine.
         submit = st.button("Analisar o Risco", use_container_width=True)
         
         if submit:
             ph = st.empty()
             ph.markdown('''
                 <div style="background-color: #1a1a2e; border: 2px solid #8be9fd; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 0 20px rgba(139, 233, 253, 0.5); margin-bottom: 20px;">
-                    <h3 style="color: #8be9fd; margin: 0;">⚡ Rodando o modelo...</h3>
+                    <h3 style="color: #8be9fd; margin: 0; font-weight: bold;">⚡ Rodando o modelo...</h3>
                 </div>
             ''', unsafe_allow_html=True)
             
