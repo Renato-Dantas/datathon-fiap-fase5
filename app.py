@@ -265,7 +265,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Autoavaliação e Gap de Percepção")
     
     insight_card("As percepções dos alunos sobre si mesmos são coerentes com seu desempenho real?",
-                 "Existe um claro 'Gap de Otimismo'. A maioria esmagadora dos alunos possui uma Autoavaliação (IAA) superior às notas reais de Desempenho (IDA). Isso mostra alta confiança, mas exige tutoria para alinhar a percepção e garantir que o aluno não subestime a necessidade de estudar mais.")
+                 "Em todos os anos, a autoavaliação (IAA) fica acima do desempenho real (IDA), indicando tendência de superestimação. A distribuição do gap confirma que a maioria dos alunos se avalia um pouco acima da própria nota. Ao mesmo tempo, o IAA se mantém mais próximo do nível de engajamento (IEG), que é consistentemente mais alto. Isso mostra que os alunos se percebem melhor do que performam, mas essa confiança está alinhada a um bom nível de engajamento — um ponto positivo para evolução futura.")
 
     col7, col8 = st.columns(2)
     
