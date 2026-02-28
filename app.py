@@ -391,7 +391,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Ponto de Virada")
     
     insight_card("Quais comportamentos mais impulsionam o Ponto de Virada ao longo do tempo?",
-                 "A chave é multidisciplinar! A correlação reforça que indicadores atitudinais e emocionais (Psicopedagógico e Engajamento) lideram a influência para o aluno atingir o 'Ponto de Virada'. O acompanhamento dessas competências garante a consistência do desenvolvimento.")
+                 "O 'ponto de virada' é o momento em que o aluno assume o protagonismo de sua jornada. Os dados revelam que os grandes motores dessa transformação são o Desempenho Acadêmico (IPP) e o Engajamento (IEG). Com uma forte correlação de 0,61 e 0,56, respectivamente, vemos que o aluno que 'vira a chave' é aquele que está presente, participa e colhe resultados no aprendizado. Note a diferença clara nas médias: quem atingiu o ponto de virada saltou para 8,66 em engajamento e 7,81 em pedagogia. Por outro lado, o fator psicossocial (IPS) se mantém estável em ambos os grupos, o que nos mostra que a virada de chave acontece, primordialmente, através da dedicação aos estudos e da constância nas atividades. Isso valida nossa estratégia de incentivar a presença e o esforço contínuo como o caminho mais curto para a transformação de vida.")
 
     col11, col12 = st.columns(2)
     
