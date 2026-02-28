@@ -502,14 +502,38 @@ elif menu == "📊 Análise de Dados":
     st.plotly_chart(fig9, use_container_width=True)
 
     # 10. BOLSA
-    st.markdown("### 10. Efeito 'Bolsa de Estudos'")
-    df_bolsa = df.groupby('bolsa')[['ida', 'inde']].mean().reset_index().melt(id_vars='bolsa')
-    fig10 = px.bar(df_bolsa, x='variable', y='value', color='bolsa', barmode='group', text_auto='.2f',
-                   color_discrete_sequence=[ROXO_PM, NEON_GREEN])
-    fig10.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig10), use_container_width=True)
-    insight_card("10. Qual a alavanca de impacto ao garantir Bolsas de Estudo em escolas parceiras?",
+    st.markdown("### Efeito 'Bolsa de Estudos'")
+
+    insight_card("Qual a alavanca de impacto ao garantir Bolsas de Estudo em escolas parceiras?",
                  "As bolsas de estudo funcionam como catalisador supremo. O ambiente de uma escola privada aliada ao apoio da ONG gera um duplo motor de desenvolvimento, resultando nos maiores índices atingidos. Ampliar essa aliança é o grande diferencial de alavancagem.")
+
+    df_bolsa_temp = df.copy()
+    df_bolsa_temp['bolsa_str'] = df_bolsa_temp['bolsa'].map({1: 'Bolsista', 0: 'Não Bolsista'})
+    
+    # Calculate means for 'ida', 'inde', 'ieg' grouped by 'bolsa_str'
+    df_bolsa = df_bolsa_temp.groupby('bolsa_str')[['ida', 'inde', 'ieg']].mean().reset_index().melt(id_vars='bolsa_str')
+    
+    # Ensure correct category ordering inside grouped chart
+    cat_order_bolsa = ['Bolsista', 'Não Bolsista']
+    df_bolsa['bolsa_str'] = pd.Categorical(df_bolsa['bolsa_str'], categories=cat_order_bolsa, ordered=True)
+    df_bolsa = df_bolsa.sort_values('bolsa_str')
+
+    fig10 = px.bar(df_bolsa, x='variable', y='value', color='bolsa_str', barmode='group', text='value',
+                   color_discrete_sequence=['#8257E5', '#d0bfff'])
+    
+    fig10 = apply_plotly_layout(fig10)
+    fig10.update_traces(texttemplate='%{text:.2f}', textposition='outside', 
+                        marker_line_color=BG_COLOR, marker_line_width=1, 
+                        textfont=dict(color='#FFFFFF', size=14, family="Arial Black"))
+    
+    y_max_bolsa = df_bolsa['value'].max() * 1.2
+    fig10.update_layout(title="P10. Comparativo de Performance: Bolsistas vs. Não Bolsistas", 
+                        legend_title="",
+                        legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5, font=dict(color=TEXT_COLOR)),
+                        yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, y_max_bolsa]), 
+                        xaxis=dict(title=""), height=400)
+    
+    st.plotly_chart(fig10, use_container_width=True)
 
     # 11. GERAL
     st.markdown("### 11. Efetividade Geral do Programa (2022-2024)")
