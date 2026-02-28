@@ -537,14 +537,16 @@ elif menu == "📊 Análise de Dados":
     st.plotly_chart(fig10, use_container_width=True)
 
     # 11. GERAL
-    st.markdown("### 11. Efetividade Geral do Programa (2022-2024)")
+    st.markdown("### Efetividade Geral do Programa")
+    
+    insight_card("Efetividade do programa: Os indicadores mostram melhora consistente ao longo do ciclo?",
+                 "Sim! Acompanhando a linha do tempo encontramos o amadurecimento incontestável do projeto. A Passos Mágicos foi desafiada nos anos analisados a absorver dezenas de alunos novos com déficits, e mesmo assim manteve a curva do programa ascendente.")
+                 
     df_all = df.groupby('ano')[['ida', 'ieg', 'ips', 'ipp', 'inde']].mean().reset_index().melt(id_vars='ano')
     fig11 = px.line(df_all, x='ano', y='value', color='variable', markers=True, text='value')
     fig11.update_traces(texttemplate='%{text:.1f}', textposition='top center', line=dict(width=4))
     fig11.update_xaxes(tickvals=[2022, 2023, 2024])
     st.plotly_chart(apply_plotly_layout(fig11), use_container_width=True)
-    insight_card("11. Efetividade do programa: Os indicadores mostram melhora consistente ao longo do ciclo (2022 a 2024)?",
-                 "Sim! Acompanhando a linha do tempo encontramos o amadurecimento incontestável do projeto. A Passos Mágicos foi desafiada nos anos analisados a absorver dezenas de alunos novos com déficits, e mesmo assim manteve a curva do programa ascendente.")
 
 
 elif menu == "🔍 Predição de Risco":
