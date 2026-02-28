@@ -423,7 +423,7 @@ elif menu == "📊 Análise de Dados":
         fig7b = px.bar(df_ipv, x='variable', y='value', color='ipv_cat', barmode='group', text='value',
                        color_discrete_sequence=['#8257E5', '#d0bfff'])
         fig7b = apply_plotly_layout(fig7b)
-        fig7b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=13, family="Arial Black"))
+        fig7b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#FFFFFF', size=13, family="Arial Black"))
         
         y_max = df_ipv['value'].max() * 1.2
         fig7b.update_layout(title="Média dos Indicadores por Status de Virada", 
@@ -450,7 +450,7 @@ elif menu == "📊 Análise de Dados":
     fig8 = px.bar(df_gen, x='variable', y='value', color='genero', barmode='group', text='value',
                   color_discrete_sequence=['#8257E5', '#d0bfff'])
     fig8 = apply_plotly_layout(fig8)
-    fig8.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=14, family="Arial Black"))
+    fig8.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#FFFFFF', size=14, family="Arial Black"))
     
     y_max_gen = df_gen['value'].max() * 1.2
     fig8.update_layout(title="Comparativo de Indicadores por Gênero", 
