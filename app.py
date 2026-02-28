@@ -497,7 +497,7 @@ elif menu == "📊 Análise de Dados":
     fig9.update_layout(title="P9. Impacto da Idade de Ingresso no Desempenho Geral (INDE Médio)", 
                        showlegend=False,
                        yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, y_max_idade]), 
-                       xaxis=dict(title="Faixa Etária de Ingresso", titlefont=dict(color=TEXT_COLOR, size=14, family="Arial Black")), 
+                       xaxis=dict(title=dict(text="Faixa Etária de Ingresso", font=dict(color=TEXT_COLOR, size=14, family="Arial Black"))), 
                        height=400)
     st.plotly_chart(fig9, use_container_width=True)
 
