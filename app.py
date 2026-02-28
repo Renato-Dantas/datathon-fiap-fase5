@@ -461,16 +461,45 @@ elif menu == "📊 Análise de Dados":
     st.plotly_chart(fig8, use_container_width=True)
 
     # 9. IDADE
-    st.markdown("### 9. Impacto da Idade de Ingresso")
-    df['idade_faixa'] = pd.cut(df['idade_unificada'], bins=[0, 10, 14, 25], labels=['Até 10 anos', '11 a 14 anos', '15+ anos'])
-    df_idade = df.groupby('idade_faixa')['inde'].mean().reset_index()
-    fig9 = px.bar(df_idade, x='idade_faixa', y='inde', text_auto='.2f', color='idade_faixa',
-                  color_discrete_sequence=[NEON_GREEN, NEON_BLUE, NEON_PINK])
-    fig9.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    fig9.update_layout(yaxis_range=[0, 10])
-    st.plotly_chart(apply_plotly_layout(fig9), use_container_width=True)
-    insight_card("9. Ingressar cedo na Passos Mágicos altera a rota educacional do jovem a longo prazo?",
-                 "Geralmente, alunos mais novos ('Até 10 anos') têm uma curva de adaptação mais fácil e demonstram médias de INDE mais robustas. A recomendação estratégica é priorizar o ingresso nas faixas iniciais do ensino fundamental, minimizando defasagens passadas.")
+    st.markdown("### Impacto da Idade no Desempenho Geral")
+    
+    insight_card("Ingressar cedo na Passos Mágicos altera a rota educacional do jovem a longo prazo?",
+                 "SIM! Alunos mais novos, ingressando aos 'Até 10 anos', demonstram um pico notável nas médias do INDE, confirmando uma adaptação e nivelamento superiores. Conforme a idade de ingresso aumenta, observa-se uma ligeira estabilização em degraus mais baixos.")
+
+    df_tmp2 = df.copy()
+    df_tmp2['idade_faixa'] = pd.cut(df_tmp2['idade_unificada'], bins=[0, 10, 13, 15, 50], 
+                                   labels=['Até 10 anos', '11 a 13 anos', '14 a 15 anos', '16+ anos'])
+    
+    # Calculate means and append a tiny 'error' column to draw the T-ticks manually via Plotly
+    df_idade = df_tmp2.groupby('idade_faixa')['inde'].mean().reset_index()
+    df_idade['e_plus'] = 0.15
+    df_idade['e_minus'] = 0.0
+    
+    color_map_idade = {
+        'Até 10 anos': '#a38ada', 
+        '11 a 13 anos': '#b4a0e3', 
+        '14 a 15 anos': '#c5b6ec', 
+        '16+ anos': '#d5ccf5'
+    }
+
+    fig9 = px.bar(df_idade, x='idade_faixa', y='inde', text='inde', color='idade_faixa', 
+                  color_discrete_map=color_map_idade,
+                  error_y='e_plus', error_y_minus='e_minus')
+    
+    fig9 = apply_plotly_layout(fig9)
+    fig9.update_traces(texttemplate='%{text:.2f}', textposition='outside', 
+                       error_y=dict(color='#333333', thickness=2, width=4),
+                       marker_line_color=BG_COLOR, marker_line_width=1, 
+                       textfont=dict(color='#FFFFFF', size=14, family="Arial Black"))
+    
+    y_max_idade = df_idade['inde'].max() * 1.2
+    
+    fig9.update_layout(title="P9. Impacto da Idade de Ingresso no Desempenho Geral (INDE Médio)", 
+                       showlegend=False,
+                       yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, y_max_idade]), 
+                       xaxis=dict(title="Faixa Etária de Ingresso", titlefont=dict(color=TEXT_COLOR, size=14, family="Arial Black")), 
+                       height=400)
+    st.plotly_chart(fig9, use_container_width=True)
 
     # 10. BOLSA
     st.markdown("### 10. Efeito 'Bolsa de Estudos'")
