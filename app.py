@@ -379,9 +379,9 @@ elif menu == "📊 Análise de Dados":
     
     fig6.update_traces(texttemplate='Média IPP: %{text:.2f}', textposition='outside', 
                        marker_line_color=BG_COLOR, marker_line_width=1, 
-                       textfont=dict(color='#8257E5', size=14, family="Arial Black"))
+                       textfont=dict(color='#FFFFFF', size=14, family="Arial Black"))
     
-    fig6.update_layout(title="", showlegend=False,
+    fig6.update_layout(title="Avaliação Psicopedagógica (IPP) por nível de defasagem (IAN)", showlegend=False,
                        yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 10]), 
                        xaxis=dict(title=""), height=400)
     
