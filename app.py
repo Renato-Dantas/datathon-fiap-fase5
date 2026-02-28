@@ -360,7 +360,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Avaliação Psicopedagógica (IPP) por Nível de Defasagem (IAN)")
     
     insight_card("As avaliações dos professores (IPP) confirmam a defasagem matemática do IAN?",
-                 "Há convergência clara e direta! Alunos que o sistema classifica com defasagem Severa pela idade também recebem as menores notas na avaliação técnica (IPP). Isso prova que a defasagem identificada pela idade reflete dificuldades pedagógicas reais.")
+                 "Aqui mostramos que os indicadores estão em total sintonia. As barras revelam que, conforme o nível de defasagem (IAN) melhora, a média da avaliação psicopedagógica (IPP) também sobe — saindo de 6,95 no nível Severo para 7,68 no Adequado. Isso confirma que o IAN é um termômetro preciso: o aluno que está na idade certa para a série também demonstra um desempenho de aprendizagem superior. Essa validação entre os dados nos dá segurança de que estamos diagnosticando e tratando as dificuldades dos jovens com exatidão.")
 
     df_ipp = df.groupby('defasagem_cat')['ipp'].mean().reset_index()
     df_ipp['defasagem_cat'] = df_ipp['defasagem_cat'].replace({
