@@ -437,7 +437,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Indicadores de Gênero")
     
     insight_card("Há distinções significativas de performance e impacto entre Meninos e Meninas?",
-                 "A equidade tem sido uma marca presente. O modelo da Passos Mágicos prova ser inclusivo para todos os gêneros, com patamares muito aproximados. Pequenas diferenças observadas no IPS balizam apenas atividades para fortalecer a autoestima sem comprometer resultados globais.")
+                 "Os dados revelam um cenário de equilíbrio e equidade: não há disparidade entre meninos e meninas. As médias de Engajamento (IEG) e Desempenho (IDA) são quase idênticas. Meninas têm engajamento de 8,32 (contra 8,13 dos meninos), e no desempenho a diferença é mínima (6,40 vs 6,35). Essa consistência prova que a metodologia da Passos Mágicos é universal. O gênero não determina o sucesso; com as mesmas oportunidades, ambos os grupos atingem altos níveis de dedicação e aprendizado de forma equivalente.")
 
     df_gen = df.groupby('genero')[['ida', 'ieg', 'ips']].mean().reset_index().melt(id_vars='genero')
     df_gen['genero'] = df_gen['genero'].replace({'F': 'Feminino', 'M': 'Masculino'})
