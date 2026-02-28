@@ -1,0 +1,23 @@
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.env
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE e OS
+.vscode/
+.idea/
+.DS_Store
+
+# Requisitos Excluidos pelo Usuário
+/suport/
+POSTECH*.pdf
+*.bat
