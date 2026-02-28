@@ -553,64 +553,57 @@ elif menu == "📊 Análise de Dados":
 elif menu == "🔍 Predição de Risco":
     st.markdown("""
         <style>
-        /* Sidebar fix */
-        [data-testid="stSidebar"] div[data-testid="stRadio"] p {
-            color: white !important;
-            font-weight: normal !important;
-        }
-        
-        /* Typography for labels: Streamlit puts <p> inside <label> */
-        div[data-testid="stNumberInput"] label p, 
-        div[data-testid="stSelectbox"] label p, 
-        div[data-testid="stRadio"] label p, 
-        div[data-testid="stSlider"] label p {
-            color: #8be9fd !important;
+        /* Typography for labels (titles of sliders and inputs) */
+        section.main div[data-testid="stNumberInput"] label p, 
+        section.main div[data-testid="stSelectbox"] label p, 
+        section.main div[data-testid="stRadio"] label p, 
+        section.main div[data-testid="stSlider"] label p {
             font-weight: bold !important;
-            font-size: 14px !important;
-            margin-bottom: 5px !important;
         }
 
-        /* Container styling AND Gap: 2.5rem */
-        div[data-testid="stNumberInput"], 
-        div[data-testid="stSelectbox"], 
-        div[data-testid="stRadio"], 
-        div[data-testid="stSlider"] {
+        /* Container styling AND Gap: exactly 2.5rem, no borders */
+        section.main div[data-testid="stNumberInput"], 
+        section.main div[data-testid="stSelectbox"], 
+        section.main div[data-testid="stRadio"], 
+        section.main div[data-testid="stSlider"] {
             background-color: #1a1a2e !important; 
             padding: 20px 25px !important;
             border-radius: 8px !important;
-            border-left: 4px solid #8be9fd !important;
+            border: none !important; /* Remove unrequested side borders */
             box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
             margin-bottom: 2.5rem !important; /* Espaçamento entre os elementos das divs: 2.5rem */
         }
         
-        /* Slider strictly white */
-        div[data-testid="stSlider"] div[data-baseweb="slider"] > div {
-            background-color: transparent !important;
-        }
-        /* Slider thumb (dot) */
-        div[data-testid="stSlider"] div[data-baseweb="slider"] [role="slider"] {
+        /* Slider: Progress line, dot, and text #fff */
+        /* Make the thumb (dot) white */
+        section.main div[data-testid="stSlider"] [data-baseweb="slider"] [role="slider"] {
             background-color: #fff !important; 
-            border: none !important;
+            border: 2px solid #fff !important; 
         }
-        /* Slider line / track */
-        div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div > div {
+        /* Make the progress line white (Streamlit uses deeply nested divs for the track line) */
+        section.main div[data-testid="stSlider"] [data-baseweb="slider"] > div > div > div:first-child {
             background-color: #fff !important; 
         }
-        /* Text values (current value floating and min/max ends) */
-        div[data-testid="stSlider"] div[data-baseweb="slider"] div {
+        /* Ensure Min/Max scale texts are white and visible */
+        section.main div[data-testid="stTickBar"] {
             color: #fff !important; 
+        }
+        /* Floating value above slider */
+        section.main div[data-testid="stSlider"] div[data-baseweb="tooltip"] {
+            color: #000 !important; /* Floating tooltip is usually light */
         }
         
         /* Other Inputs texts */
-        div[data-baseweb="input"] input,
-        div[data-baseweb="select"] div {
+        section.main div[data-baseweb="input"] input,
+        section.main div[data-baseweb="select"] div {
             color: white !important;
             background-color: #282a36 !important; 
             border: none !important;
         }
 
         /* Button: bold and black */
-        div.stButton > button, div.stButton > button p {
+        section.main .stButton > button, 
+        section.main .stButton > button p {
             background-color: #50fa7b !important;
             color: #000 !important; 
             font-size: 18px !important;
@@ -620,7 +613,7 @@ elif menu == "🔍 Predição de Risco":
             border: none !important;
             padding: 10px !important;
         }
-        div.stButton > button:hover {
+        section.main .stButton > button:hover {
             box-shadow: 0 0 15px #50fa7b !important;
             transform: translateY(-2px);
         }
