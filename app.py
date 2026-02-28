@@ -464,7 +464,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Impacto da Idade no Desempenho Geral")
     
     insight_card("Ingressar cedo na Passos Mágicos altera a rota educacional do jovem a longo prazo?",
-                 "SIM! Alunos mais novos, ingressando aos 'Até 10 anos', demonstram um pico notável nas médias do INDE, confirmando uma adaptação e nivelamento superiores. Conforme a idade de ingresso aumenta, observa-se uma ligeira estabilização em degraus mais baixos.")
+                 "A intervenção precoce é um diferencial claro. Alunos que entram com até 10 anos têm o melhor desempenho (7,55), enquanto quem ingressa aos 16+ anos atinge a média mais baixa (6,69). Essa queda gradual prova que quanto antes o jovem começa, mais sólida é sua evolução. Iniciar cedo garante tempo para consolidar o aprendizado e atingir resultados superiores ao longo da jornada na Passos Mágicos.")
 
     df_tmp2 = df.copy()
     df_tmp2['idade_faixa'] = pd.cut(df_tmp2['idade_unificada'], bins=[0, 10, 13, 15, 50], 
