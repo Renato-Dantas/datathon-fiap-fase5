@@ -562,12 +562,13 @@ elif menu == "🔍 Predição de Risco":
         /* Custom card styling - instead of overriding global st elements, we use purely HTML wrapper or highly specific classes if possible.
            Since Streamlit injects inputs outside our markdown, we'll keep the override but scope it better. */
            
+        /* Make sure all labels are bold */
         section.main div[data-testid="stNumberInput"] > label, 
         section.main div[data-testid="stSelectbox"] > label, 
         section.main div[data-testid="stRadio"] > label, 
         section.main div[data-testid="stSlider"] > label {
             color: #8be9fd !important;
-            font-weight: bold !important;
+            font-weight: 900 !important; /* Bolder font for labels */
             font-size: 14px !important;
             margin-bottom: 5px !important;
             visibility: visible !important;
@@ -579,33 +580,40 @@ elif menu == "🔍 Predição de Risco":
         section.main div[data-testid="stRadio"], 
         section.main div[data-testid="stSlider"] {
             background-color: #1a1a2e; /* dark background */
-            padding: 15px 20px;
+            padding: 20px 25px; /* Increased padding / gap */
             border-radius: 8px;
             border-left: 4px solid #8be9fd; /* neon blue border */
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
+            margin-bottom: 25px; /* Increased gap between elements */
         }
         
-        /* Fix the slider background to be transparent/dark instead of the white box the user complained about,
-           but keep the slider track/thumb visible */
+        /* Fix the slider background and make thumb/track neon blue */
         section.main div[data-baseweb="slider"] > div {
             background-color: transparent !important;
+        }
+        section.main div[data-baseweb="slider"] [role="slider"] {
+            background-color: rgb(139, 233, 253) !important; /* thumb color */
+            border: 2px solid white !important;
+        }
+        section.main div[data-baseweb="slider"] div[data-testid="stTickBar"] {
+            color: white !important; /* Min/Max scale values */
+            font-size: 12px !important;
         }
         
         /* Input text values in white */
         section.main div[data-baseweb="input"] input,
         section.main div[data-baseweb="select"] div {
             color: white !important;
-            background-color: #282a36 !important; /* Slightly lighter dark for the input field itself */
+            background-color: #282a36 !important; 
             border: none !important;
         }
 
         /* Button styling */
         .stButton>button {
             background-color: #50fa7b !important;
-            color: #000000 !important; /* Black text requested */
+            color: black !important; /* Black font */
             font-size: 18px !important;
-            font-weight: 900 !important;
+            font-weight: 900 !important; /* Heavy bold */
             border-radius: 8px !important;
             transition: 0.3s !important;
             border: none !important;
