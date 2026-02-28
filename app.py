@@ -388,15 +388,50 @@ elif menu == "📊 Análise de Dados":
     st.plotly_chart(fig6, use_container_width=True)
 
     # 7. IPV
-    st.markdown("### 7. Comportamentos do Ponto de Virada (IPV)")
-    df['ipv_cat'] = np.where(df['ipv'] >= 7, 'Virou a Chave', 'Em Desenvolvimento')
-    df_ipv = df.groupby('ipv_cat')[['ieg', 'ipp', 'ips']].mean().reset_index().melt(id_vars='ipv_cat')
-    fig7 = px.bar(df_ipv, x='variable', y='value', color='ipv_cat', barmode='group', text_auto='.2f',
-                  color_discrete_sequence=[ROXO_PM, NEON_GREEN])
-    fig7.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig7), use_container_width=True)
-    insight_card("7. Ponto de virada (IPV): Quais comportamentos mais influenciam o IPV ao longo do tempo?",
-                 "A chave é multidisciplinar! A correlação reforça que indicadores atitudinais e emocionais (Engajamento e Psicopedagógico) lideram a influência. Alunos que viram a chave possuem médias extraordinárias e homogêneas em disciplina e estabilidade emocional.")
+    st.markdown("### Ponto de Virada")
+    
+    insight_card("Quais comportamentos mais impulsionam o Ponto de Virada ao longo do tempo?",
+                 "A chave é multidisciplinar! A correlação reforça que indicadores atitudinais e emocionais (Psicopedagógico e Engajamento) lideram a influência para o aluno atingir o 'Ponto de Virada'. O acompanhamento dessas competências garante a consistência do desenvolvimento.")
+
+    col11, col12 = st.columns(2)
+    
+    with col11:
+        corr_ipv = df[['ipp', 'ieg', 'ips', 'ipv']].corr()[['ipv']].drop('ipv').round(2)
+        corr_ipv.index = ['Psicopedag.', 'Engajamento', 'Psicossocial']
+        
+        fig7a = px.imshow(corr_ipv, text_auto=".2f", aspect="auto",
+                          color_continuous_scale=["#f3f0ff", "#a188e5", "#8257E5"],
+                          labels=dict(x="", y="", color="Correlação"))
+        fig7a = apply_plotly_layout(fig7a)
+        fig7a.update_traces(xgap=2, ygap=2, textfont=dict(color='#000000', size=14, family="Arial Black"))
+        fig7a.update_xaxes(showticklabels=False, title="Ponto de<br>Virada")
+        fig7a.update_layout(title="Fatores que Impulsionam o Ponto de Virada - Correlação (Pearson)", coloraxis_showscale=False, height=400)
+        st.plotly_chart(fig7a, use_container_width=True)
+        
+    with col12:
+        df_tmp = df.copy()
+        df_tmp['ipv_cat'] = np.where(df_tmp['ipv'] >= 7, 'Virou a Chave', 'Em Evolução')
+        
+        # Calculate exactly IPP, IEG, IPS means.
+        df_ipv = df_tmp.groupby('ipv_cat')[['ieg', 'ips', 'ipp']].mean().reset_index().melt(id_vars='ipv_cat')
+        
+        # Sort categorical logic for 'Em Evolução' first, then 'Virou a Chave'
+        cat_order_ipv = ['Em Evolução', 'Virou a Chave']
+        df_ipv['ipv_cat'] = pd.Categorical(df_ipv['ipv_cat'], categories=cat_order_ipv, ordered=True)
+        df_ipv = df_ipv.sort_values('ipv_cat')
+
+        fig7b = px.bar(df_ipv, x='variable', y='value', color='ipv_cat', barmode='group', text='value',
+                       color_discrete_sequence=['#8257E5', '#d0bfff'])
+        fig7b = apply_plotly_layout(fig7b)
+        fig7b.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=13, family="Arial Black"))
+        
+        y_max = df_ipv['value'].max() * 1.2
+        fig7b.update_layout(title="Média dos Indicadores por Status de Virada", 
+                            legend_title="",
+                            legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5, font=dict(color=TEXT_COLOR)),
+                            yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, y_max]), 
+                            xaxis=dict(title=""), height=400)
+        st.plotly_chart(fig7b, use_container_width=True)
 
     # 8. GÊNERO
     st.markdown("### 8. Análise de Gênero")
