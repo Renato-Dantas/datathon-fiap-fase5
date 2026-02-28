@@ -357,14 +357,35 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig5b, use_container_width=True)
 
     # 6. IPP
-    st.markdown("### 6. Psicopedagógico vs Defasagem (IPP x IAN)")
-    df_ipp = df.groupby('defasagem_cat')['ipp'].mean().reset_index()
-    fig6 = px.bar(df_ipp, x='defasagem_cat', y='ipp', text_auto='.2f', color='defasagem_cat',
-                  color_discrete_map={"Adequado": NEON_GREEN, "Moderado": NEON_ORANGE, "Severo": NEON_PINK})
-    fig6.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1)
-    st.plotly_chart(apply_plotly_layout(fig6), use_container_width=True)
-    insight_card("6. Aspectos psicopedagógicos (IPP): As avaliações dos professores (IPP) confirmam a defasagem matemática do IAN?",
+    st.markdown("### Avaliação Psicopedagógica (IPP) por Nível de Defasagem (IAN)")
+    
+    insight_card("As avaliações dos professores (IPP) confirmam a defasagem matemática do IAN?",
                  "Há convergência clara e direta! Alunos que o sistema classifica com defasagem Severa pela idade também recebem as menores notas na avaliação técnica (IPP). Isso prova que a defasagem identificada pela idade reflete dificuldades pedagógicas reais.")
+
+    df_ipp = df.groupby('defasagem_cat')['ipp'].mean().reset_index()
+    df_ipp['defasagem_cat'] = df_ipp['defasagem_cat'].replace({
+        'Severo': 'Severa (0 a 4.9)',
+        'Moderado': 'Moderada (5 a 6.9)',
+        'Adequado': 'Adequada (7 a 10)'
+    })
+    
+    # Sort strictly Severa -> Moderada -> Adequada
+    cat_order = ['Severa (0 a 4.9)', 'Moderada (5 a 6.9)', 'Adequada (7 a 10)']
+    df_ipp['defasagem_cat'] = pd.Categorical(df_ipp['defasagem_cat'], categories=cat_order, ordered=True)
+    df_ipp = df_ipp.sort_values('defasagem_cat')
+
+    fig6 = px.bar(df_ipp, x='defasagem_cat', y='ipp', text='ipp', color_discrete_sequence=['#8257E5'])
+    fig6 = apply_plotly_layout(fig6)
+    
+    fig6.update_traces(texttemplate='Média IPP: %{text:.2f}', textposition='outside', 
+                       marker_line_color=BG_COLOR, marker_line_width=1, 
+                       textfont=dict(color='#8257E5', size=14, family="Arial Black"))
+    
+    fig6.update_layout(title="", showlegend=False,
+                       yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 10]), 
+                       xaxis=dict(title=""), height=400)
+    
+    st.plotly_chart(fig6, use_container_width=True)
 
     # 7. IPV
     st.markdown("### 7. Comportamentos do Ponto de Virada (IPV)")
