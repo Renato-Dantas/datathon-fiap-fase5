@@ -658,7 +658,7 @@ elif menu == "🔍 Predição de Risco":
         st.markdown('<div style="height: 20px;"></div>', unsafe_allow_html=True)
         
         # Wrapped the button in columns to make it centered or full width properly, but form_submit_button behaviour is fine.
-        submit = st.button("Analisar o Risco", use_container_width=True)
+        submit = st.button("Analisar Risco", use_container_width=True)
         
         if submit:
             ph = st.empty()
