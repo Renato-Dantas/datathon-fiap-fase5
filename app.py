@@ -169,8 +169,8 @@ elif menu == "📊 Análise de Dados":
     # 2. IDA
     st.markdown("### Desempenho acadêmico (IDA)")
     
-    insight_card("O desempenho acadêmico responde ao nivelamento e aumenta ou estagna com os anos?",
-                 "O indicador acadêmico (IDA) comprova a **recuperação real** dos alunos, subindo de forma consistente. A metodologia da ONG não apenas tira o aluno do risco básico, mas **blinda e fortalece o seu desempenho histórico**, garantindo que ele suporte a alta complexidade que as próximas fases escolares exigirão.")
+    insight_card("O desempenho acadêmico médio (IDA) está melhorando, estagnado ou caindo ao longo dos anos e fases?",
+                 "O IDA médio cresceu de 6,09 em 2022 para 6,67 em 2023, com leve ajuste para 6,35 em 2024 — ainda acima do ponto inicial. Por fase, a maioria avançou entre 2022 e 2023, com pequenas oscilações em 2024. O cenário geral é de evolução no desempenho, com estabilidade e consolidação dos resultados ao longo do tempo.")
 
     col3, col4 = st.columns(2)
     
