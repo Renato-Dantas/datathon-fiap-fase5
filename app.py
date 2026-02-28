@@ -316,7 +316,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Aspectos Psicossociais (IPS)")
     
     insight_card("Qual o impacto das variações psicossociais no rendimento e engajamento?",
-                 "Existe uma correlação positiva entre o bem-estar psicológico e os resultados acadêmicos. Alunos que mantêm ou melhoram seu IPS (Aspectos Psicossociais) apresentam menores quedas de desempenho e engajamento comparados àqueles que sofrem piora psicossocial. O suporte psicológico atua como um 'escudo' protetor para a vida acadêmica.")
+                 "As correlações entre variação psicossocial (ΔIPS) e variação de desempenho (ΔIDA) e engajamento (ΔIEG) são fracas e levemente negativas (-0,10 e -0,20). Isso indica que não há uma relação forte e direta. No entanto, alunos com IPS em queda apresentam reduções maiores em desempenho e engajamento. Ou seja, o IPS não explica tudo, mas sua queda funciona como sinal de alerta para possíveis perdas acadêmicas.")
 
     col9, col10 = st.columns(2)
     
