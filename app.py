@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import plotly.express as px
 import plotly.graph_objects as go
+import time
 
 # -----------------
 # CONFIGURAÇÃO DE PAGINA
@@ -550,8 +551,39 @@ elif menu == "📊 Análise de Dados":
 
 
 elif menu == "🔍 Predição de Risco":
-    st.title("Sistema de Alerta Precoce")
-    st.markdown("Utilize o modelo de **Inteligência Artificial (XGBoost Otimizado)** para prever a probabilidade matemática de um aluno entrar em risco grave de defasagem acadêmica no próximo período.")
+    st.markdown("""
+        <style>
+        div[data-testid="stNumberInput"] > label, div[data-testid="stSelectbox"] > label, div[data-testid="stRadio"] > label, div[data-testid="stSlider"] > label {
+            color: #8be9fd !important;
+            font-weight: 800 !important;
+            font-size: 16px !important;
+        }
+        div[data-testid="stNumberInput"], div[data-testid="stSelectbox"], div[data-testid="stRadio"], div[data-testid="stSlider"] {
+            background-color: #1a1a2e;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #8be9fd;
+            margin-bottom: 10px;
+        }
+        div[data-baseweb="slider"] div {
+            background-color: #ffffff !important;
+        }
+        .stButton>button {
+            background-color: #50fa7b !important;
+            color: #0d1117 !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+            border-radius: 10px !important;
+            transition: 0.3s !important;
+        }
+        .stButton>button:hover {
+            box-shadow: 0 0 20px #50fa7b !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.title("Modelo de predição de risco")
+    st.markdown("Preencha o formulário abaixo com as informações do aluno. O sistema analisará os dados sociodemográficos e as notas da jornada de base para prever de forma antecipada a probabilidade do jovem entrar em um quadro grave de defasagem, direcionando assim esforços pedagógicos corretivos de maneira certeira.")
     
     if modelo_dict is None:
         st.error("O modelo Preditivo ('modelo_risco.pkl') não foi encontrado.")
@@ -560,41 +592,45 @@ elif menu == "🔍 Predição de Risco":
         le_genero = modelo_dict['le_genero']
         le_bolsa = modelo_dict['le_bolsa']
         
-        with st.form("form_predicao"):
-            st.markdown("### 👤 Dados do Aluno")
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                idade = st.number_input("Idade de Ingresso", min_value=5, max_value=25, value=12)
-                genero = st.selectbox("Gênero", ["Menino", "Menina"])
-                gen_val = "Masculino" if genero == "Menino" else "Feminino"
-            with c2:
-                bolsa = st.selectbox("Aluno possui Bolsa em Instituição Privada?", ["Não", "Sim"])
-            with c3:
-                st.markdown('<div style="height: 25px;"></div>', unsafe_allow_html=True)
-                submit = st.form_submit_button("Analisar Risco com A.I. ⚡", use_container_width=True)
+        st.markdown("### 👤 Dados do Aluno")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            idade = st.number_input("Idade de Ingresso no Curso", min_value=5, max_value=25, value=12)
+        with c2:
+            bolsa = st.radio("Possui Bolsa em Instituição Privada?", ["Sim", "Não"], horizontal=True)
+        with c3:
+            genero = st.radio("Gênero", ["Masculino", "Feminino"], horizontal=True)
+            gen_val = genero
             
-            st.markdown("### 📝 Notas do Período Atual")
-            n1, n2, n3 = st.columns(3)
-            with n1:
-                ida = st.slider("Desempenho Acadêmico (IDA)", 0.0, 10.0, 6.0, 0.1)
-                delta_ida = st.number_input("Variação (IDA) em relação ao último ano", min_value=-10.0, max_value=10.0, value=0.0)
-            with n2:
-                ieg = st.slider("Engajamento p/ Tarefas (IEG)", 0.0, 10.0, 7.5, 0.1)
-                delta_ieg = st.number_input("Variação (IEG)", min_value=-10.0, max_value=10.0, value=0.0)
-            with n3:
-                ips = st.slider("Bem Estar Psicossocial (IPS)", 0.0, 10.0, 8.0, 0.1)
-                delta_ips = st.number_input("Variação Emocional (IPS)", min_value=-10.0, max_value=10.0, value=0.0)
+        st.markdown("### 📝 Notas do período atual")
+        n1, n2, n3 = st.columns(3)
+        with n1:
+            ida = st.slider("Desempenho Acadêmico (IDA)", 0.0, 10.0, 6.0, 0.1)
+            delta_ida = st.number_input("Variação (IDA)", min_value=-10.0, max_value=10.0, value=0.0)
+            ipp = st.slider("Avaliação Psicopedagógica (IPP)", 0.0, 10.0, 7.0, 0.1)
+        with n2:
+            ieg = st.slider("Engajamento p/ Tarefas (IEG)", 0.0, 10.0, 7.5, 0.1)
+            delta_ieg = st.number_input("Variação (IEG)", min_value=-10.0, max_value=10.0, value=0.0)
+            iaa = st.slider("Auto-avaliação do Aluno (IAA)", 0.0, 10.0, 8.0, 0.1)
+        with n3:
+            ips = st.slider("Bem Estar Psicossocial (IPS)", 0.0, 10.0, 8.0, 0.1)
+            delta_ips = st.number_input("Variação Emocional (IPS)", min_value=-10.0, max_value=10.0, value=0.0)
+            ipv = st.slider("Ponto de Virada (IPV)", 0.0, 10.0, 6.5, 0.1)
             
-            st.markdown("### 🧠 Avaliações Subjetivas (Professores e Conselhos)")
-            o1, o2, o3 = st.columns(3)
-            with o1:
-                ipp = st.slider("Avaliação Psicopedagógica (IPP)", 0.0, 10.0, 7.0, 0.1)
-            with o2:
-                iaa = st.slider("Auto-avaliação do Aluno (IAA)", 0.0, 10.0, 8.0, 0.1)
-            with o3:
-                ipv = st.slider("Ponto de Virada (IPV)", 0.0, 10.0, 6.5, 0.1)
+        st.markdown('<div style="height: 15px;"></div>', unsafe_allow_html=True)
+        submit = st.button("Analisar o Risco", use_container_width=True)
         
         if submit:
+            ph = st.empty()
+            ph.markdown('''
+                <div style="background-color: #1a1a2e; border: 2px solid #8be9fd; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 0 20px rgba(139, 233, 253, 0.5); margin-bottom: 20px;">
+                    <h3 style="color: #8be9fd; margin: 0;">⚡ Rodando o modelo...</h3>
+                </div>
+            ''', unsafe_allow_html=True)
+            
+            time.sleep(3)
+            ph.empty()
+            
             try:
                 gen_enc = le_genero.transform([gen_val])[0]
                 bolsa_enc = le_bolsa.transform([bolsa])[0]
@@ -618,13 +654,33 @@ elif menu == "🔍 Predição de Risco":
                 classe = xgb_model.predict(input_data)[0]
                 
                 st.markdown("---")
-                st.markdown("## 🎯 Diagnóstico da A.I.")
+                st.markdown("## 📊 Resultado da análise")
                 
                 if classe == 1 or probabilidade > 50:
-                    st.error(f"⚠️ **RISCO ALTO DE DEFASAGEM** ({probabilidade:.1f}%)")
-                    st.markdown(f"O modelo de Machine Learning identificou padrões severos de risco. O impacto cascata nas avaliações recentes sugere focar em Acompanhamento Imediato.")
+                    cor = "#ff5555" # vermelho neon
+                    titulo = "RISCO ALTO DE DEFASAGEM"
+                    texto_peso = "A falta de engajamento aliada a baixas notas atuais refletem uma desmotivação significativa. A tendência atual é o aluno perder o ponto de adesão ao programa da ONG se não acompanhado imediatamente."
+                    texto_sugestao = "Ativar uma mentoria urgente e aproximação com os responsáveis. Foque no resgate e suporte emocional num primeiro momento (psicopedagogia) antes de exigir pressão por performance acadêmica, fortalecendo inicialmente a assiduidade."
+                elif probabilidade > 30:
+                    cor = "#f1fa8c" # amarelo
+                    titulo = "ATENÇÃO: RISCO MODERADO"
+                    texto_peso = "Ocorrem oscilações preocupantes em campos atitudinais, possivelmente variação negativa indicando uma desmotivação ou dificuldade em algumas disciplinas."
+                    texto_sugestao = "Acompanhamento pedagógico quinzenal. Recomendamos oficinas de reforço ou aulas de revisão (atividades extras em que seja cobrado a presença) para evitar que a defasagem se alargue nos próximos meses."
                 else:
-                    st.success(f"✅ **BOM PROGNÓSTICO** ({probabilidade:.1f}% de risco apenas)")
-                    st.markdown("O aluno apresenta base emocional e engajamento suficientes para manter a adequação educacional sem defasagem profunda.")
+                    cor = "#50fa7b" # verde neon
+                    titulo = "BOM PROGNÓSTICO"
+                    texto_peso = "O aluno demonstra excepcional estabilidade nos resultados e níveis altos e promissores de engajamento contínuo. Entendimento pedagógico alinhado."
+                    texto_sugestao = "Mantenha ou instigue a autonomia. Desafios que gerem protagonismo da rotina, como colocá-lo no grupo de alunos que auxiliam os iniciantes como monitores, impulsionará em definitivo seu Ponto de Virada."
+                
+                st.markdown(f'''
+                    <div style="background-color: #1a1a2e; border-left: 8px solid {cor}; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.4);">
+                        <h2 style="color: {cor}; margin-top: 0;">{titulo} ({probabilidade:.1f}%)</h2>
+                        <h4 style="color: #ffffff; margin-top: 20px;">🔍 O que pesou na análise:</h4>
+                        <p style="color: #cccccc; font-size: 16px;">{texto_peso}</p>
+                        <h4 style="color: #8be9fd; margin-top: 20px;">💡 Sugestão de Intervenção:</h4>
+                        <p style="color: #cccccc; font-size: 16px;">{texto_sugestao}</p>
+                    </div>
+                ''', unsafe_allow_html=True)
+                
             except Exception as e:
                 st.error(f"Erro ao processar predição: {e}")
