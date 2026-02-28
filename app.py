@@ -508,7 +508,8 @@ elif menu == "📊 Análise de Dados":
                  "As bolsas de estudo funcionam como catalisador supremo. O ambiente de uma escola privada aliada ao apoio da ONG gera um duplo motor de desenvolvimento, resultando nos maiores índices atingidos. Ampliar essa aliança é o grande diferencial de alavancagem.")
 
     df_bolsa_temp = df.copy()
-    df_bolsa_temp['bolsa_str'] = df_bolsa_temp['bolsa'].map({1: 'Bolsista', 0: 'Não Bolsista'})
+    # Handle 'Sim' vs everything else ('Não' with potential encoding issues)
+    df_bolsa_temp['bolsa_str'] = df_bolsa_temp['bolsa'].apply(lambda x: 'Bolsista' if str(x).strip().lower() == 'sim' else 'Não Bolsista')
     
     # Calculate means for 'ida', 'inde', 'ieg' grouped by 'bolsa_str'
     df_bolsa = df_bolsa_temp.groupby('bolsa_str')[['ida', 'inde', 'ieg']].mean().reset_index().melt(id_vars='bolsa_str')
