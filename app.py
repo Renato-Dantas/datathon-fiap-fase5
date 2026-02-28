@@ -179,7 +179,7 @@ elif menu == "📊 Análise de Dados":
         fig2a = px.bar(df_ida_ano, x='ano', y='ida', text=df_ida_ano['ida'].apply(lambda x: f'Nota {x:.2f}'),
                        color_discrete_sequence=[ROXO_PM])
         fig2a = apply_plotly_layout(fig2a)
-        fig2a.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff'))
+        fig2a.update_traces(textposition='outside', marker_line_color='#ffffff', marker_line_width=1, textfont=dict(color='#ffffff', size=14, family="Arial Black"))
         fig2a.update_layout(title="Evolução do Desempenho Acadêmico (IDA Médio)",
                             yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, 10]), 
                             xaxis=dict(title="", type='category'),
@@ -434,13 +434,31 @@ elif menu == "📊 Análise de Dados":
         st.plotly_chart(fig7b, use_container_width=True)
 
     # 8. GÊNERO
-    st.markdown("### 8. Análise de Gênero")
-    df_gen = df.groupby('genero')[['inde', 'ida', 'ieg', 'ips']].mean().reset_index().melt(id_vars='genero')
-    fig8 = px.line(df_gen, x='variable', y='value', color='genero', markers=True, text='value')
-    fig8.update_traces(texttemplate='%{text:.2f}', textposition='top center', line=dict(width=3))
-    st.plotly_chart(apply_plotly_layout(fig8), use_container_width=True)
-    insight_card("8. Há distinções significativas de performance e impacto entre Meninos e Meninas?",
-                 "A equidade tem sido uma marca presente. O modelo da Passos Mágicos prova ser inclusivo para todos os gêneros, com patamares muito aproximados. Pequenas diferenças observadas no IPS balizam apenas atividades para fortalecer a autoestima sem comprometer resultados.")
+    st.markdown("### Indicadores de Gênero")
+    
+    insight_card("Há distinções significativas de performance e impacto entre Meninos e Meninas?",
+                 "A equidade tem sido uma marca presente. O modelo da Passos Mágicos prova ser inclusivo para todos os gêneros, com patamares muito aproximados. Pequenas diferenças observadas no IPS balizam apenas atividades para fortalecer a autoestima sem comprometer resultados globais.")
+
+    df_gen = df.groupby('genero')[['ida', 'ieg', 'ips']].mean().reset_index().melt(id_vars='genero')
+    df_gen['genero'] = df_gen['genero'].replace({'F': 'Feminino', 'M': 'Masculino'})
+    
+    # Sort categories inside gender as Feminino -> Masculino
+    cat_order_gen = ['Feminino', 'Masculino']
+    df_gen['genero'] = pd.Categorical(df_gen['genero'], categories=cat_order_gen, ordered=True)
+    df_gen = df_gen.sort_values('genero')
+
+    fig8 = px.bar(df_gen, x='variable', y='value', color='genero', barmode='group', text='value',
+                  color_discrete_sequence=['#8257E5', '#d0bfff'])
+    fig8 = apply_plotly_layout(fig8)
+    fig8.update_traces(texttemplate='%{text:.2f}', textposition='outside', marker_line_color=BG_COLOR, marker_line_width=1, textfont=dict(color='#8257E5', size=14, family="Arial Black"))
+    
+    y_max_gen = df_gen['value'].max() * 1.2
+    fig8.update_layout(title="Comparativo de Indicadores por Gênero", 
+                       legend_title="",
+                       legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5, font=dict(color=TEXT_COLOR)),
+                       yaxis=dict(showgrid=False, showticklabels=False, title="", range=[0, y_max_gen]), 
+                       xaxis=dict(title=""), height=400)
+    st.plotly_chart(fig8, use_container_width=True)
 
     # 9. IDADE
     st.markdown("### 9. Impacto da Idade de Ingresso")
