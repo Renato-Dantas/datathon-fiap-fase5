@@ -505,7 +505,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Efeito 'Bolsa de Estudos'")
 
     insight_card("Qual a alavanca de impacto ao garantir Bolsas de Estudo em escolas parceiras?",
-                 "As bolsas de estudo funcionam como catalisador supremo. O ambiente de uma escola privada aliada ao apoio da ONG gera um duplo motor de desenvolvimento, resultando nos maiores índices atingidos. Ampliar essa aliança é o grande diferencial de alavancagem.")
+                 "A bolsa atua como um potente catalisador de resultados. Os dados mostram que bolsistas superam os não bolsistas em todos os indicadores, registrando médias superiores tanto no IDA (6,93 vs 6,32) quanto no INDE (7,73 vs 7,22). Isso demonstra que o suporte e o reconhecimento direto fortalecem o compromisso do aluno. O incentivo transforma o potencial em desempenho real, elevando o patamar de aproveitamento educacional dos jovens dentro do projeto.")
 
     df_bolsa_temp = df.copy()
     # Handle 'Sim' vs everything else ('Não' with potential encoding issues)
