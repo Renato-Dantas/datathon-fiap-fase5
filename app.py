@@ -540,7 +540,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Efetividade Geral do Programa")
     
     insight_card("Efetividade do programa: Os indicadores mostram melhora consistente ao longo do ciclo?",
-                 "Sim! Acompanhando a linha do tempo encontramos o amadurecimento incontestável do projeto. A Passos Mágicos foi desafiada nos anos analisados a absorver dezenas de alunos novos com déficits, e mesmo assim manteve a curva do programa ascendente.")
+                 "Os indicadores demonstram maturidade e crescimento constante ao longo dos anos. O Engajamento (IEG) mantém-se como o índice mais alto, atingindo 8,09, enquanto o Índice Geral (INDE) e o Pedagógico (IPP) apresentam evolução sólida, chegando a 7,40 e 7,55, respectivamente. A recuperação do indicador Psicossocial (IPS) em 2024, após uma queda no ano anterior, reforça a capacidade do projeto de ajustar rotas e apoiar o aluno. Essa evolução equilibrada prova que a Passos Mágicos gera um impacto real e multidimensional na vida dos jovens.")
                  
     df_all = df.groupby('ano')[['ida', 'ieg', 'ips', 'ipp', 'inde']].mean().reset_index().melt(id_vars='ano')
     fig11 = px.line(df_all, x='ano', y='value', color='variable', markers=True, text='value')
