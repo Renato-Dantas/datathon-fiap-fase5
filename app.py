@@ -134,7 +134,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Perfil geral de defasagem (IAN)")
     
     insight_card("Qual é o perfil geral de defasagem dos alunos (IAN) e como ele evolui?", 
-                 "Existe uma **tendência estrutural de melhora** e redução de riscos severos. A Passos Mágicos está gerando impacto de longo prazo para nivelar a aprendizagem ano a ano. Focar no acompanhamento individualizado de alunos no grau *Moderado* é a chave para acelerar a migração para a Excelência (*Adequado*).")
+                 "Aqui vemos se o aluno está no nível certo para a idade. As barras mostram que o grupo Adequado cresceu de 2022 para 2024, enquanto os casos Severos diminuíram drasticamente. Isso prova que o nivelamento da Passos Mágicos está funcionando: estamos resgatando quem estava atrasado e acelerando o aprendizado desses jovens.")
 
     df['defasagem_cat'] = pd.cut(df['ian'], bins=[-1, 4.9, 6.9, 10], labels=["Severa (0 a 4.9)", "Moderada (5 a 6.9)", "Adequada (7 a 10)"])
     color_map_ian = {"Severa (0 a 4.9)": "#d0bfff", "Moderada (5 a 6.9)": "#a188e5", "Adequada (7 a 10)": "#8257E5"}
