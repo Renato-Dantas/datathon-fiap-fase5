@@ -228,7 +228,7 @@ elif menu == "📊 Análise de Dados":
     st.markdown("### Impacto no engajamento")
     
     insight_card("Qual o impacto real do engajamento estudantil nos resultados?",
-                 "Existe uma relação direta e forte entre o nível de entrega às tarefas e as notas conquistadas. O engajamento se mostra como um fator determinante para o alcance do Ponto de Virada, com alunos altamente engajados liderando as estatísticas acadêmicas de sucesso.")
+                 "A correlação entre Engajamento e Desempenho é positiva (0,54), assim como com o Ponto de Virada (0,56). Isso indica uma relação moderada: quanto maior o engajamento, melhores tendem a ser os resultados. Na prática, alunos com engajamento alto apresentam médias significativamente superiores em IDA e IPV. O dado confirma que engajar é um dos principais motores de evolução acadêmica no Passos Mágicos.")
 
     col5, col6 = st.columns(2)
     
